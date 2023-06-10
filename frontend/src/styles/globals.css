@@ -1,0 +1,19 @@
+*{
+  padding: 0;
+  margin: 0;
+  font-family: Poppins;
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url(../../public/font/Poppins-Regular.ttf);
+}
+
+a , a:valid , a:visited , a:invalid{
+  text-decoration: none;
+  color: inherit;
+}
+
+section{
+  min-height: 100vh;
+}
