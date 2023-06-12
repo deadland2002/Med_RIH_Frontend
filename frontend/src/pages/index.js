@@ -11,6 +11,12 @@ export default function Home() {
         <title>Home</title>
         <meta name="description" content="Med R.I.H" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="icon"
+          href="/svg/med-rih-website-favicon-color.svg"
+          type="image/svg"
+          sizes="16x16"
+        ></link>
       </Head>
 
       <Navbar />

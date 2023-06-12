@@ -16,9 +16,15 @@ const SignIn = () => {
   return (
     <>
       <Head>
-        <title>Home</title>
-        <meta name="description" content="Med R.I.H" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Sign In</title>
+        <meta name="description" content="Sign in to Med R.I.H account" />
+        <meta name="viewport" content="width=device-width, initialc-scale=1" />
+        <link
+          rel="icon"
+          href="/svg/med-rih-website-favicon-color.svg"
+          type="image/svg"
+          sizes="16x16"
+        ></link>
       </Head>
       <div className={styles.signinParent}>
         <div className={styles.wrapper}>
@@ -142,7 +148,7 @@ const SignIn = () => {
                       />
                     </div>
                   </div>
-                  <button>Login</button>
+                  <button type="submit">Login</button>
                 </form>
               </div>
             </div>
