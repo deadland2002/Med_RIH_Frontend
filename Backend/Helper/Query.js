@@ -132,7 +132,7 @@ module.exports = {
         const doctor = await DoctorSchema.findOne({ _id: ID });
         const user = await VerifyToken(token);
 
-        if (doctor && user) {
+        if (doctor && user && City_of_Appointment == doctor.City) {
           const available = await AppointmentSchema.find({
             DoctorEmail: doctor.Email,
             Time_Slot: Day_Time[1],
@@ -168,6 +168,7 @@ module.exports = {
                     Appointment_Time: Day_Time[1],
                     Doctor: doctor.FName + " " + doctor.SName,
                     Booked_Date: Date.now(),
+                    Appointment_City:City_of_Appointment,
                   },
                 },
               }

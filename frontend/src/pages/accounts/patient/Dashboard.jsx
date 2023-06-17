@@ -1,8 +1,41 @@
-import React from 'react'
-import Layout from '../../../../components/account/patient/Layout'
-import styles from "@/styles/components/account/patient/Dashboard.module.scss"
+import React, { useEffect, useMemo, useState } from "react";
+import Layout from "../../../../components/account/patient/Layout";
+import styles from "@/styles/components/account/patient/Dashboard.module.scss";
+import axios from "axios";
+import { getCookie } from "cookies-next";
 
-const Dashboard = () => {
+export async function getServerSideProps({ req, res }) {
+  const TOKEN = req.cookies["TOKEN"];
+  const response = await axios.post(
+    "http://localhost:2000/api/user/allAppointments",
+    { token: TOKEN }
+  );
+  console.log(response.data);
+  if (response && response.data && response.data.status == 200) {
+    return {
+      props: {
+        data: response?.data?.result ? response.data.result : "",
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        permanen: false,
+        destination: "/SignIn",
+      },
+    };
+  }
+}
+
+const Dashboard = ({ data }) => {
+  const [allAppointments, setAllAppintments] = useState(data ? data : []);
+  const [upcommingAppointments, setupcommingAppintments] = useState(
+    allAppointments.filter((single) => {
+      return !single.Visited;
+    })
+  );
+  console.log(allAppointments);
+
   return (
     <Layout>
       <div className={styles.dashWrapper}>
@@ -15,9 +48,24 @@ const Dashboard = () => {
 
         <div className={styles.featured}>
           <div className={styles.cardHolder}>
-            <div className={styles.upcomming}>no upcomming appointment</div>
-            <div className={styles.renew}>no renew appointment</div>
-            <div className={styles.current}>no pending appointment</div>
+            <div className={styles.upcomming}>
+              <span className={styles.heading}>Upcomming Appointment :</span>
+              {upcommingAppointments.length >= 1
+                ? [
+                    <div>
+                      {upcommingAppointments.length}
+                    </div>,
+                  ]
+                : "no upcomming appointment"}
+            </div>
+            <div className={styles.renew}>
+              <span className={styles.heading}>Renew appointment</span>
+              <span>no renew appointment</span>
+            </div>
+            <div className={styles.current}>
+              <span className={styles.heading}>Pending appointment</span>
+              <span>no pending appointment</span>
+            </div>
           </div>
         </div>
 
@@ -40,41 +88,37 @@ const Dashboard = () => {
                   <td>Id</td>
                   <td>Doctor</td>
                   <td>Date</td>
+                  <td>Time</td>
                   <td>Location</td>
                   <td>Hospital</td>
                   <td>Status</td>
                 </tr>
 
-
-                <tr className={styles.values}>
-                  <td>#3234234</td>
-                  <td>Dr. abc</td>
-                  <td>Jan 22 , 2023</td>
-                  <td>Kanpur</td>
-                  <td>ABC Hospital</td>
-                  <td><span className={styles.status}> Incomplete</span></td>
-                </tr>
-               
-               
-               
-               
-                <tr className={styles.values}>
-                  <td>#3234234453453</td>
-                  <td>Dr. abc Mishra</td>
-                  <td>Jan 22 , 2023</td>
-                  <td>Kanpur UtterPradesh</td>
-                  <td>ABC Hospital Ganga gang</td>
-                  <td><span className={styles.status}> Incomplete</span></td>
-                </tr>
-
-
+                {allAppointments.map((single, index) => {
+                  return (
+                    <tr className={styles.values}>
+                      <td>{index + 1}</td>
+                      <td>{single.Doctor}</td>
+                      <td>{single.Appointment_Date}</td>
+                      <td>{single.Appointment_Time}</td>
+                      <td>{single.Appointment_City}</td>
+                      <td>ABC Hospital</td>
+                      <td>
+                        <span className={styles.status}>
+                          {" "}
+                          {single.Visited ? "Visited" : "Up Coming"}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

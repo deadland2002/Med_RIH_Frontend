@@ -31,10 +31,21 @@
         display: flex;
         padding: 10px 20px;
         width: calc(100% - 40px);
-        align-items: center;
         min-height: 30px;
         background-color: white;
         border-radius: 10px;
+        flex-direction: column;
+        gap: 10px;
+        .heading{
+          font-weight: 700;
+        }
+        .dataWrapper{
+          display: flex;
+          gap: 20px;
+          span{
+            min-width: 200px;
+          }
+        }
       }
       .upcomming{
         background-color: rgb(135, 247, 255);

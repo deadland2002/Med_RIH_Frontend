@@ -29,7 +29,7 @@ const Appointment = ({ queryParam }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [result, setResult] = useState([]);
-
+  
   const createQueryString = useCallback(
     (name, value) => {
       console.log(name, value);
@@ -83,6 +83,11 @@ const Appointment = ({ queryParam }) => {
       if (res && res.data && res.data.result) {
         console.log(res.data.result);
         setResult(res.data.result);
+      }else if(res && res.data){
+        if(res.data.status == 401){
+          alert("login session expired , login again");
+          router.push("/SignIn")
+        }
       }
     }
     console.log("ended");
@@ -90,6 +95,7 @@ const Appointment = ({ queryParam }) => {
 
   const handleBookAppointment = async (obj) => {
     if (obj) {
+      const TOKEN = getCookie("TOKEN");
       const response = await fetch(
         "http://localhost:2000/api/BookAppointment",
         {
@@ -99,7 +105,7 @@ const Appointment = ({ queryParam }) => {
           },
           body: JSON.stringify({
             ID: obj[0],
-            token: user.token,
+            token: TOKEN,
             Day_Time: obj[4],
             Date_of_Appointment: obj[6],
             City_of_Appointment: obj[7],
@@ -194,7 +200,7 @@ const Appointment = ({ queryParam }) => {
         </div>
 
         <div className={styles.slotHolder}>
-          <AppointmentMap data={result} />
+          <AppointmentMap data={result} handleBookAppointment={handleBookAppointment} />
         </div>
       </div>
     </Layout>

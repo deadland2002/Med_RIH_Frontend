@@ -187,4 +187,37 @@ module.exports = {
 
     return res.send("<h1>Server test</h1>");
   },
+
+
+  SearchAppointmentPatient: async (req, res) => {
+    try {
+      const {
+        token
+      } = req.body;
+
+      console.log("SearchAppointmentPatient");
+      console.log(req.body);
+
+      if (token) {
+        console.log("ok");
+        try {
+          const user = await JWT.verify(token, process.env.JWTSECRET);
+          if (user) {
+            const result = await userSchema.findOne({Email:user.Email}).lean();
+            console.log(result)
+            return res.header(200).json({ status: 200, result: result.Appointments });
+          }else{
+            return res.header(200).json({ status: 402 });
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    return res.header(201).json({ status: 401 });
+  },
+
+
 };

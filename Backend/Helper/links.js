@@ -26,6 +26,10 @@ const link = (app) => {
   app.post("/api/user/SignIn", async function (req, res) {
     UserValidate.SignIn(req,res);
   });
+  
+  app.post("/api/user/allAppointments", async function (req, res) {
+    UserValidate.SearchAppointmentPatient(req,res);
+  });
 
   app.post("/SignUp", async function (req, res) {
     UserValidate.SignUp(req,res);

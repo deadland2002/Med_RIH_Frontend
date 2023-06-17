@@ -21,6 +21,7 @@
         justify-content: space-between;
         align-items: center;
         gap: 20px;
+        flex-wrap: wrap;
         .field {
             flex: 1 0 fit-content;
             display: flex;
@@ -51,5 +52,6 @@
   .slotHolder{
     background-color: white;
     border-radius: 10px;
+    min-height: 80vh;
   }
 }
