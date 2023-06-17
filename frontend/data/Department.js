@@ -1,0 +1,27 @@
+const Department = [
+  "Casualty department",
+  "Operating theatre (OT)",
+  "Intensive care unit (ICU)",
+  "Anesthesiology department",
+  "Cardiology department",
+  "ENT department",
+  "Geriatric department",
+  "Gastroenterology department",
+  "General surgery",
+  "Gynaecology department",
+  "Haematology department",
+  "Pediatrics department",
+  "Neurology department",
+  "Oncology department",
+  "Opthalmology department",
+  "Orthopaedic department",
+  "Urology department",
+  "Psychiatry department",
+  "Inpatient Department (IPD)",
+  "Outpatient Department (OPD)",
+  "Radiology department",
+  "Clinical pathology department",
+  "Nutrition and dietetics",
+];
+
+export {Department}

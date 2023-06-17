@@ -1,18 +1,56 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Head from "next/head";
 import Navbar from "../../components/Navbar";
 import { Player } from "@lottiefiles/react-lottie-player";
 import styles from "../styles/SignIn.module.scss";
 import signinAnimation from "../../public/lottie/27637-welcome.json";
+import axios from "axios";
+import { getCookies, setCookie, deleteCookie } from 'cookies-next';
+import { useRouter } from "next/router";
 
 const SignIn = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedRadio, setSelectedRadio] = useState("");
+  const [data_from_form, setData_from_form] = useState({});
+  const submitBtnRef = useRef();
+  const router = useRouter();
 
   const HandleRadioChange = (e) => {
     const { name, value } = e.target;
     setSelectedRadio(value);
   };
+
+  const handleDataChange = (e) => {
+    const { name, value } = e.target;
+    setData_from_form((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    submitBtnRef.current.innerText = "Loading"
+
+    if (selectedRadio == "patient") {
+      const res = await axios.post("http://localhost:2000/api/user/SignIn", {
+        ...data_from_form,
+        category: selectedRadio,
+      });
+      if(res && res.data  && res.data.token){
+        setCookie("TOKEN",res.data.token,{path:"/"});
+        submitBtnRef.current.innerText = "Verified"
+          await new Promise((res,rej)=>{
+            setTimeout(()=>{
+              res();
+            },2000)
+          })
+        router.push("/accounts/patient/Dashboard");
+      }
+    }
+
+    submitBtnRef.current.innerText = "retry"
+
+    
+  };
+
   return (
     <>
       <Head>
@@ -46,7 +84,10 @@ const SignIn = () => {
                 <div className={styles.subHeading}>
                   <span>Resume your healty and care free life-style</span>
                 </div>
-                <form action="#" className={styles.formWrapper}>
+                <form
+                  className={styles.formWrapper}
+                  onSubmit={handleFormSubmit}
+                >
                   <div className={styles.fieldWrapper}>
                     <img src="/png/email-blue.png" alt="email" width={"30px"} />
                     <input
@@ -54,6 +95,7 @@ const SignIn = () => {
                       name="email"
                       placeholder="you@example.com"
                       required
+                      onChange={handleDataChange}
                     />
                   </div>
                   <div className={styles.fieldWrapper}>
@@ -63,6 +105,7 @@ const SignIn = () => {
                       name="password"
                       placeholder="At least 8 characters"
                       required
+                      onChange={handleDataChange}
                     />
                     <img
                       src={
@@ -148,7 +191,7 @@ const SignIn = () => {
                       />
                     </div>
                   </div>
-                  <button type="submit">Login</button>
+                  <button type="submit" ref={submitBtnRef}>Login</button>
                 </form>
               </div>
             </div>
