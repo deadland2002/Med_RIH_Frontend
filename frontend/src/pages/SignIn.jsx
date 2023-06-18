@@ -46,6 +46,30 @@ const SignIn = () => {
       }
     }
 
+
+
+
+
+    if (selectedRadio == "doctor") {
+      const res = await axios.post("http://localhost:2000/api/Doctor/SignIn", {
+        ...data_from_form,
+        category: selectedRadio,
+      });
+      console.log(res.data);
+
+      if(res && res.data  && res.data.token){
+        setCookie("TOKEN",res.data.token,{path:"/"});
+        submitBtnRef.current.innerText = "Verified"
+          await new Promise((res,rej)=>{
+            setTimeout(()=>{
+              res();
+            },2000)
+          })
+        router.push("/accounts/doctor/Dashboard");
+        return
+      }
+    }
+
     submitBtnRef.current.innerText = "retry"
 
     

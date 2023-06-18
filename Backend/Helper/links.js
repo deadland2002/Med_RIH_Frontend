@@ -11,8 +11,12 @@ const link = (app) => {
     return res.send("server running");
   });
   
-  app.get("/test", function (req, res) {
+  app.get("/user/test", function (req, res) {
     return UserValidate.Test(req,res);
+  });
+
+  app.get("/doctor/test", function (req, res) {
+    return DoctorValidate.Test(req,res);
   });
   
   app.get("/api/DoctorSignUp", async function (req, res) {
@@ -30,6 +34,19 @@ const link = (app) => {
   app.post("/api/user/allAppointments", async function (req, res) {
     UserValidate.SearchAppointmentPatient(req,res);
   });
+  
+  
+  app.post("/api/doctor/allAppointments", async function (req, res) {
+    DoctorValidate.SearchAppointmentPatient(req,res);
+  });
+  
+  
+  
+  app.post("/api/user/Appointment", async function (req, res) {
+    QueryValidate.FindAppointment(req,res);
+  });
+
+
 
   app.post("/SignUp", async function (req, res) {
     UserValidate.SignUp(req,res);
@@ -43,7 +60,7 @@ const link = (app) => {
     UserValidate.VerifyToken(req,res);
   });
   
-  app.post("/api/DoctorSignIn", async function (req, res) {
+  app.post("/api/Doctor/SignIn", async function (req, res) {
     DoctorValidate.SignIn(req,res);
   });
   

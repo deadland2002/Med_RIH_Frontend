@@ -9,7 +9,9 @@ const AppointmentSchema = new mongoose.Schema(
     City: { type: String, require: true },
     Date: { type: String, require: true },
     Time_Slot: { type: String, require: true },
-    Next_Slot: { type: String },
+    Next_Slot: { type: String , default:null },
+    Previous_Slot: { type: String , default:null },
+    Visited: { type: Boolean , default:false },
     Medication: [
       {
         Medicine_Name:{ type: String, require: true },

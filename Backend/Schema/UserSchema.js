@@ -7,6 +7,10 @@ const Schema = new mongoose.Schema({
     Password:{type:String , require:true},
     Phone:{type:String , require:true},
     Gender:{type:String , require:true},
+    Image:{type:String , require:true},
+    Age:{type:String , require:true},
+    Weight:{type:Number , require:true},
+    Height:{type:Number , require:true},
     Verified:{type:Boolean , default:false},
     Appointments:[
         {

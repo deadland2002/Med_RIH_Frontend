@@ -69,8 +69,8 @@ module.exports = {
               secret
             );
             return res.header(200).json({ status: 200, token });
-          }else{
-            console.log(user)
+          } else {
+            console.log(user);
           }
         } catch (err) {
           console.log(err);
@@ -182,18 +182,20 @@ module.exports = {
     });
     console.log(pass);
 
-    const user = await userSchema.updateOne({Email:"satvikshukla453@gmail.com"},{Password:pass});
+    const user = await userSchema.updateOne(
+      { Email: "satvikshukla453@gmail.com" },
+      {
+        Weight : 50
+      }
+    );
     console.log(user);
 
     return res.send("<h1>Server test</h1>");
   },
 
-
   SearchAppointmentPatient: async (req, res) => {
     try {
-      const {
-        token
-      } = req.body;
+      const { token } = req.body;
 
       console.log("SearchAppointmentPatient");
       console.log(req.body);
@@ -203,10 +205,14 @@ module.exports = {
         try {
           const user = await JWT.verify(token, process.env.JWTSECRET);
           if (user) {
-            const result = await userSchema.findOne({Email:user.Email}).lean();
-            console.log(result)
-            return res.header(200).json({ status: 200, result: result.Appointments });
-          }else{
+            const result = await userSchema
+              .findOne({ Email: user.Email })
+              .lean();
+            console.log(result);
+            return res
+              .header(200)
+              .json({ status: 200, result: result.Appointments });
+          } else {
             return res.header(200).json({ status: 402 });
           }
         } catch (err) {
@@ -218,6 +224,4 @@ module.exports = {
     }
     return res.header(201).json({ status: 401 });
   },
-
-
 };

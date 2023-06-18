@@ -3,6 +3,7 @@ const AppointmentSchema = require("../Schema/Appointments.js");
 const UserSchema = require("../Schema/UserSchema.js");
 const JWT = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { default: mongoose } = require("mongoose");
 
 async function VerifyUser(email, pass) {
   try {
@@ -168,7 +169,7 @@ module.exports = {
                     Appointment_Time: Day_Time[1],
                     Doctor: doctor.FName + " " + doctor.SName,
                     Booked_Date: Date.now(),
-                    Appointment_City:City_of_Appointment,
+                    Appointment_City: City_of_Appointment,
                   },
                 },
               }
@@ -182,6 +183,48 @@ module.exports = {
       console.log(err);
     }
 
+    return res.json({ status: 201 });
+  },
+
+  FindAppointment: async (req, res) => {
+    try {
+      const { token, ID } = req.body;
+      if (token && ID) {
+        const user = await VerifyToken(token);
+        console.log(ID);
+        if (user) {
+          const doctor = await DoctorSchema.findOne({ Email: user.Email });
+          console.log("doctor");
+          if (doctor) {
+            const objID = await mongoose.Types.ObjectId.createFromHexString(ID);
+
+            const result = await AppointmentSchema.findOne({
+              _id: objID,
+            }).lean();
+
+            const patientInfo = await UserSchema.findOne({
+              Email: result.PatientEmail,
+            });
+
+            console.log(patientInfo);
+
+            return res.json({
+              status: 200,
+              appointment_details: result,
+              patient_Details: {
+                Height: patientInfo.Height,
+                Weight: patientInfo.Weight,
+                Age : patientInfo.Age,
+                Gender : patientInfo.Gender
+              },
+            });
+          }
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      return res.json({ status: 202 });
+    }
     return res.json({ status: 201 });
   },
 };

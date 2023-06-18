@@ -19,11 +19,11 @@ const Navbar = () => {
             Home
         </div>
             </Link>
-          <Link href={"/accounts/doctor/Appointment"}>
+          {/* <Link href={"/accounts/doctor/Appointment"}>
         <div className={styles.items}>
             Appointment
         </div>
-            </Link>
+            </Link> */}
       </li>
       <li className={styles.dataHolder}>
         <div className={styles.items}>
