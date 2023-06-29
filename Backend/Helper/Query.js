@@ -201,6 +201,8 @@ module.exports = {
             const result = await AppointmentSchema.findOne({
               _id: objID,
             }).lean();
+            
+            console.log(result);
 
             const patientInfo = await UserSchema.findOne({
               Email: result.PatientEmail,
@@ -215,7 +217,8 @@ module.exports = {
                 Height: patientInfo.Height,
                 Weight: patientInfo.Weight,
                 Age : patientInfo.Age,
-                Gender : patientInfo.Gender
+                Gender : patientInfo.Gender,
+                Image : patientInfo.Image
               },
             });
           }
